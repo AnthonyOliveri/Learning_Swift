@@ -15,8 +15,8 @@ import UIKit
 // Type Alias - Create new name for existing type
 
 // Tuples are new: can be used to return multiple values from a function
-    // Can contain an assortment of types
-    // Contents can be decomposed
+// Can contain an assortment of types
+// Contents can be decomposed
 let tupleExample = ("something", 4.4, false)
 let (sTuple, _, bTuple) = tupleExample // _ ignores that entry in the tuple
 tupleExample.0
@@ -25,11 +25,11 @@ let tuple2 = (tupleString: "something", tupleDouble: 4.4, tupleBool: false)
 // Optionals for all types; safer and more expressive that Obj-C
 // nil in Swift is not a pointer to a nonexistent object; it is the absence of a value of a certain type
 // Be careful using forced unwrapping - it will trigger runtime error if the variable is nil
-    // Optional binding is safer
+// Optional binding is safer
 // Implicitly unwrapped optionals
-    // For variables/constants that will ALWAYS have a value
-    // Removes need to unwrap the value any time it is referenced
-    // Useful for constants that cannot be defined during initialization or when interacting with Objective-C
+// For variables/constants that will ALWAYS have a value
+// Removes need to unwrap the value any time it is referenced
+// Useful for constants that cannot be defined during initialization or when interacting with Objective-C
 var serverResponseCode: Int? = 404
 serverResponseCode = nil
 
@@ -40,7 +40,7 @@ if let testResponseCode = serverResponseCode {
 }
 
 // Error handling is typical, except the "try" is put inside a "do" block
-    // Can have multiple catch statements
+// Can have multiple catch statements
 // Assertions are useful to check for code that MUST be true in order for the program to continue
 
 
@@ -55,7 +55,7 @@ let (x, y) = (1, "fish")
 x
 y
 
-// Can use remainders on doubles 
+// Can use remainders on doubles
 -8.4 % 2
 
 // nil coalescing operator (ternary)
@@ -170,7 +170,7 @@ asdf.isEmpty
 // SETS
 
 // Sets can only contain types that are hashable
-    // Custom types must conform to both the "Hashable" and the "Equatable" protocols
+// Custom types must conform to both the "Hashable" and the "Equatable" protocols
 
 // Initialization
 var letters = Set<Character>()
@@ -408,14 +408,14 @@ currentValue
 // Closures are either 1) global functions, 2) nested functions, or 3) unnamed closures
 // Closures are equivalent to C blocks, and are useful for passing short functions as inline parameters
 // Useful for:
-    // 1) Inferring parameter and return types from context
-    // 2) Implicit returns from single-expression closures
-    // 3) Shorthand argument names
-    // 4) Trailing closure syntax
-// General syntax: 
-    // { (parameter1, parameter2) -> return type in
-    //     statements
-    // }
+// 1) Inferring parameter and return types from context
+// 2) Implicit returns from single-expression closures
+// 3) Shorthand argument names
+// 4) Trailing closure syntax
+// General syntax:
+// { (parameter1, parameter2) -> return type in
+//     statements
+// }
 // Parameters cannot contain default values
 // Closures are reference types!
 
@@ -478,11 +478,11 @@ anotherIncrement()
 
 // Enums are not assigned default integer values; associated values are optional
 // Enums are first class types. They can have:
-    // 1) Computed properties 
-    // 2) Instance methods
-    // 3) Extensions
-    // 4) Conformation to protocols
-    // 5) Default initializers
+// 1) Computed properties
+// 2) Instance methods
+// 3) Extensions
+// 4) Conformation to protocols
+// 5) Default initializers
 
 // Associated values can be of different types for different cases of the enum
 enum Barcode {
@@ -602,8 +602,157 @@ video1.resolution.height = 480
 // Stored properties (not available in enums) and computed properties
 // Type properties -> static properties
 
-// Lazy properties - not calculated until it is used for the first time
-// Useful for when the initial value depends on outside factors that are not known until after instance initialization
+// Constant stored properties can be assigned during the struct's/class's initialization
+
+// Constant structs cannot modify any properties, even variable ones
+struct someStruct {
+    var changeable: Int
+}
+let constantStruct = someStruct(changeable: 5)
+//constantStruct.changeable = 3 <-- This results in an error
+
+
+// Lazy stored properties - not calculated until it is used for the first time
+// Useful when the initial value:
+// 1) depends on outside factors that are not known until after instance initialization
+// 2) is computationally intensive to calculate
+// 3) is also not required immediately, or in some cases no needed at all
+
+class DataImporter {
+    var secretData = "secret"
+}
+class DataManger {
+    lazy var importer = DataImporter()
+}
+
+let manager = DataManger()
+let dataImport = manager.importer // Now that the lazy var is being accessed, it is being initialized
+dataImport.secretData
+
+// Unlike Obj-C, Swift does not have instance variables (ivars) as backing store for properties
+
+
+// COMPUTED PROPERTIES
+
+// Computed properties do not store values; they are getters/setters for other properties
+// Must use "var", not "let"
+// Read-only computed properties - No setter, and no need for "get" keyword (just return)
+// Similar to functions but with a single parameter
+
+struct Point {
+    var x = 0.0, y = 0.0
+}
+struct Rect {
+    var origin = Point()
+    var horizontalLength: Double
+    var verticalLength: Double
+    
+    init(length1: Double, length2: Double) {
+        horizontalLength = length1
+        verticalLength = length2
+    }
+    var upperRightCorner: Point {
+        get {
+            return Point(x: horizontalLength, y: verticalLength)
+        }
+        // If the parameter (newCorner) is not given, the default is newValue
+        set (newCorner){
+            horizontalLength = newCorner.x
+            verticalLength = newCorner.y
+        }
+    }
+}
+var myRectangle = Rect(length1: 5.0, length2: 8.0)
+myRectangle.upperRightCorner.x
+myRectangle.upperRightCorner = Point(x: 3.3, y: 4.4)
+myRectangle.upperRightCorner.y
+
+
+// PROPERTY OBSERVERS
+
+// Respond to changes in a property's value
+// Can be used on stored properties (not lazy) and inherited properties (stored and computed)
+// didSet and willSet
+
+class watchMe {
+    var something: String = "nothing" {
+        willSet {
+            print("About to set something to \(newValue)")
+        }
+        didSet {
+            print("Just finished setting something from \(oldValue) to \(something)")
+        }
+    }
+}
+let watchMeInc = watchMe()
+watchMeInc.something = "anything"
+
+
+// GLOBAL AND LOCAL VARIABLES
+
+// Global constants are declared outside of any function/method/closure or type context
+// Globals are always computed "lazily"
+
+// Type properties (class/static properties)
+// Always lazily initialized on first access
+// Must be given a default value (types do not have static initializers)
+// Obj-C did not have support for these (had to use static methods as accessors for a private static variable in the .m)
+// Declared with "static" before the var/let
+// Declared with "class" for computed properties
+
+
+
+
+
+/* METHODS */
+
+// Unlike Obj-C, Swift allows methods in Enumerations and Structures
+// Like Obj-C, method names typically include the first argument name in the method name
+// Ex: incrementBy(amount: Int, numberOfTimes: Int) - This method signature would be incrementBy(_:numberOfTimes:)
+// First param name has only local name by default, and subsequent params all have both internal and external names by default
+// The "self" keyword is often not needed (Swift infers that you are working with a property)
+// Must be used when function parameter overrides the name
+
+// Value types (structs, enums) cannot modify properties within instance methods by default
+// Swift is geared for "functional programming", which discourages changing data directly
+// Need "mutating" keyword on functions to allow it
+struct Point2 {
+    var x: Double = 0.0
+    var y: Double = 0.0
+    
+    mutating func moveByX(deltaX: Double, y deltaY: Double) {
+        self.x += deltaX
+        self.y += deltaY
+    }
+}
+
+// Structs and Enums can also use mutating methods to change the value itself
+enum TriStateSwitch {
+    case Off, Low, High
+    mutating func next() {
+        switch self {
+        case Off:
+            self = Low
+        case Low:
+            self = High
+        case High:
+            self = Off
+        }
+    }
+}
+
+// Type methods can be used for classes, structs, and enums
+// Use "static" keyword, or "class" to make the method override-able by subclasses
+// "self" refers to the type itself when used inside type methods
+// Similarly, type methods can call other type methods without prefixing it with the type name
+
+
+
+
+
+/* SUBSCRIPTS */
+
+
 
 
 
