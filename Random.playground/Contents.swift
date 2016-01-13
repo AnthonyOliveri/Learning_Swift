@@ -1,7 +1,7 @@
 import UIKit
 
 
-// HIGHER ORDER SEQUENCE FUNCTIONS
+// Higher Order Sequence Functions
 // Source: https://www.weheartswift.com/higher-order-functions-map-filter-reduce-and-more/
 
 
@@ -93,7 +93,7 @@ print(someInts2.reduce(someInts2[0], combine: { ($0 > $1 ? $0 : $1) }))
 
 
 
-// NULLABILITY AND OBJECTIVE-C
+// Nullability and Objective-C
 // Source: https://developer.apple.com/swift/blog/
 
 // "nullable" and "nonnull"
@@ -117,7 +117,7 @@ print(someInts2.reduce(someInts2[0], combine: { ($0 > $1 ? $0 : $1) }))
 
 
 
-// INCREASING PERFORMANCE BY REDUCING DYNAMIC DISPATCH
+// Increasing Performance by Reducing Dynamic Dispatch
 // Source: https://developer.apple.com/swift/blog/
 
 // The problem: At runtime, the program uses dynamic dispatch for each called method and property, since they may have been overridden in a subclass. 
@@ -130,7 +130,7 @@ print(someInts2.reduce(someInts2[0], combine: { ($0 > $1 ? $0 : $1) }))
 
 
 
-// SWIFT 2.0
+// Swift 2.0
 // Source: https://developer.apple.com/swift/blog/
 
 // Introduced error handling with try/catch/throw and ErrorType
@@ -141,7 +141,7 @@ print(someInts2.reduce(someInts2[0], combine: { ($0 > $1 ? $0 : $1) }))
 
 
 
-// STRINGS IN SWIFT 2.0
+// Strings in Swift 2.0
 // Source: https://developer.apple.com/swift/blog/
 
 // Strings are no longer a "CollectionType" (i.e. an array of characters)
@@ -161,5 +161,6 @@ cafeString.characters // Extended grapheme clusters - approximation of user-perc
 cafeString.unicodeScalars
 cafeString.utf8
 cafeString.utf16
+
 
 
