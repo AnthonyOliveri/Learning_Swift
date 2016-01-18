@@ -14,4 +14,4 @@ Swift
 
 **SwiftBook4.playground**: Type Casting, Nested Types, Extensions, Protocols, Generics, Access Control, Advanced Operators
 
-**SwiftBook4.playground**: Miscellaneous notes from other online sources (Apple Swift Blog, We :heart: Swift, etc.)
+**Random.playground**: Miscellaneous notes from other online sources (Apple Swift Blog, We :heart: Swift, etc.)
